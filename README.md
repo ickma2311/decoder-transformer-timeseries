@@ -26,6 +26,7 @@ Time series forecasting has seen significant advances with transformer architect
 - **📄 PDF**: Available in [`paper_latex/paper.pdf`](paper_latex/paper.pdf)
 - **📄 LaTeX Source**: Available in [`paper_latex/paper.tex`](paper_latex/paper.tex)
 - **📄 Zenodo DOI**: Will be added after upload
+- **📄 Zenodo DOI**: https://doi.org/10.5281/zenodo.17029650
 
 ---
 
