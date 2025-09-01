@@ -22,10 +22,10 @@ Time series forecasting has seen significant advances with transformer architect
 
 ## 📄 Paper Access
 
-- **📄 Zenodo (with DOI)**: [Coming soon - uploading to Zenodo]
 - **📄 arXiv**: [Pending endorsement]
 - **📄 PDF**: Available in [`paper_latex/paper_draft.pdf`](paper_latex/paper_draft.pdf)
 - **📄 LaTeX Source**: Available in [`paper_latex/paper_draft.tex`](paper_latex/paper_draft.tex)
+- **📄 Zenodo DOI**: Will be added after upload
 
 ---
 
