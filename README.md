@@ -37,12 +37,10 @@ ts_comparison/
 ├── 📄 README.md                    # This file
 ├── 📋 RESEARCH_SUMMARY.md          # Detailed findings summary
 ├── 🔧 requirements.txt             # Python dependencies
-├── 📁 data/                        # Processed real datasets (Hugging Face)
-│   ├── tourism_values.npz
-│   ├── traffic_values.npz
-│   ├── electricity_values.npz
-│   ├── weather_values.npz
-│   └── ett_h1_values.npz
+├── 📁 data/                        # Synthetic datasets
+│   ├── trend_seasonal_values.npz
+│   ├── multi_seasonal_values.npz
+│   └── random_walk_values.npz
 ├── 📁 models/                      # Model implementations
 │   ├── transformer_models.py      # Neural network models
 │   ├── traditional_models.py      # Statistical methods
@@ -84,10 +82,11 @@ ts_comparison/
 
 ### Datasets
 
-- **Monash TSF via Hugging Face**: `tourism`, `traffic`, `electricity`, `weather`
-- **ETT (Energy)**: `ETTh1` via Hugging Face
+- **Trend-Seasonal**: 20 series, 200 points each
+- **Multi-Seasonal**: 20 series, 300 points each  
+- **Random Walk**: 20 series, 150 points each
 
-We preprocess up to 20 series per dataset for faster iteration. See `data/dataset_summary.csv` after running the preparation script for exact counts.
+**Total**: 60 synthetic time series, ~13,000 data points
 
 ---
 
@@ -131,11 +130,17 @@ pip install -r requirements.txt
 ### Run Experiments
 
 ```bash
-# Download and preprocess datasets (Hugging Face)
+# Generate synthetic datasets (if needed)
 python data/prepare_datasets.py
 
-# Run full comparison (traditional + transformer)
+# Run transformer evaluation
+python experiments/run_transformer_eval.py
+
+# Run traditional models evaluation  
 python experiments/run_comparison.py
+
+# Comprehensive analysis
+python comprehensive_comparison.py
 ```
 
 ### Reproduce Paper Results

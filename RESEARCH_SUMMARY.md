@@ -9,10 +9,16 @@
 ## 📊 Experimental Setup
 
 ### Datasets Evaluated
-- **Public real-world datasets (Hugging Face)**: Monash TSF selections — tourism, traffic, electricity, weather; plus ETTh1 (energy)
-- **Subsampling**: Up to 20 series per dataset that meet minimum length criteria (≥ 50 points)
-- **Preprocessing**: NaN removal, univariate target standardization, chronological **80/20** split
-- See `data/dataset_summary.csv` for exact counts after preparation
+- **3 synthetic datasets** with distinct pattern types
+- **60 total time series** (20 per dataset)
+- **~13,000 total data points** across all series
+- **80/20 temporal split** (chronological order preserved)
+
+| Dataset | Series Count | Length | Pattern Type | Description |
+|---------|--------------|--------|--------------|-------------|
+| Trend-Seasonal | 20 | 200 points | Linear trend + seasonality | Business-like patterns with growth and cycles |
+| Multi-Seasonal | 20 | 300 points | Overlapping cycles | Complex seasonal interactions |
+| Random Walk | 20 | 150 points | Stochastic process | Unpredictable autoregressive patterns |
 
 ### Models Compared
 
@@ -133,10 +139,10 @@
 ## ⚠️ Study Limitations
 
 ### Methodological Constraints
-1. **Dataset coverage** - Limited subset of public datasets; additional domains may behave differently
-2. **Subsampling** - Capped series per dataset for speed; may affect aggregate metrics
-3. **Series length** - Varies by dataset; longer horizons and histories merit further study
-4. **No external features** - Known-future covariates and exogenous drivers not included
+1. **Synthetic data only** - No real-world time series complexity
+2. **Limited neural evaluation** - Only 15% coverage (9/60 series) for speed
+3. **Short series length** - Average 217 points (business series often longer)
+4. **No external features** - Weather, holidays, economic indicators not included
 
 ### Missing Comparisons
 1. **No state-of-art transformers** - PatchTST, TimesFM, Chronos not evaluated  
@@ -187,7 +193,7 @@ Generation → Train/Test Split (80/20) → Normalization → Model Training →
 
 ### Code & Data
 - **Complete framework** at `/Users/chaoma/projects/research/ts_comparison/`
-- **Processed public datasets** via Hugging Face (Monash TSF, ETTh1) with preparation script
+- **Synthetic datasets** with reproducible generation
 - **Model implementations** for all approaches tested
 - **Evaluation pipeline** with statistical analysis
 

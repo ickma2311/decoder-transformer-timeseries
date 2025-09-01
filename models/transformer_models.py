@@ -883,11 +883,9 @@ def main():
     
     # Evaluate on datasets (limited series for speed)
     datasets = [
-        'data/tourism_values.npz',
-        'data/traffic_values.npz',
-        'data/electricity_values.npz',
-        'data/weather_values.npz',
-        'data/ett_h1_values.npz'
+        'data/trend_seasonal_values.npz',
+        'data/multi_seasonal_values.npz', 
+        'data/random_walk_values.npz'
     ]
     
     for dataset_path in datasets:
