@@ -198,7 +198,7 @@ Our comprehensive evaluation reveals significant performance differences across 
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.8\textwidth]{results/figure1_overall_performance.png}
+\includegraphics[width=0.8\textwidth]{../results/figure1_overall_performance.png}
 \caption{Overall performance comparison showing Mean Absolute Error (MAE) for all eight forecasting methods. The decoder-only transformer achieves the best performance (2.143 MAE), with neural networks clearly outperforming traditional methods.}
 \label{fig:overall_performance}
 \end{figure}
@@ -233,7 +233,7 @@ Figure~\ref{fig:param_efficiency} reveals a striking inverse relationship betwee
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.8\textwidth]{results/figure2_parameter_efficiency.png}
+\includegraphics[width=0.8\textwidth]{../results/figure2_parameter_efficiency.png}
 \caption{Parameter efficiency analysis showing the relationship between model complexity and performance. The decoder-only transformer (136K parameters) achieves the best performance-to-parameter ratio, demonstrating that architectural design matters more than model size.}
 \label{fig:param_efficiency}
 \end{figure}
@@ -257,7 +257,7 @@ Figure~\ref{fig:dataset_performance} shows performance across the three dataset 
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.8\textwidth]{results/figure3_dataset_performance.png}
+\includegraphics[width=0.8\textwidth]{../results/figure3_dataset_performance.png}
 \caption{Performance comparison across three dataset types. Each method shows distinct strengths: Prophet excels on trend-seasonal data, transformers dominate multi-seasonal patterns, and ARIMA performs well on random walks.}
 \label{fig:dataset_performance}
 \end{figure}
@@ -301,7 +301,7 @@ Figure~\ref{fig:model_type} demonstrates the milestone achievement where neural 
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.8\textwidth]{results/figure4_model_type_comparison.png}
+\includegraphics[width=0.8\textwidth]{../results/figure4_model_type_comparison.png}
 \caption{Performance comparison by model category. Neural networks achieve 36\% better performance than traditional methods, marking a significant milestone in time series forecasting where neural approaches now clearly outperform classical statistical methods.}
 \label{fig:model_type}
 \end{figure}
@@ -671,7 +671,7 @@ LSTM & 0.001 & 32 & 50 & Adam & 1e-5 \\
 \STATE \textbf{function} generate\_trend\_seasonal(length=200, noise\_std=0.1)
 \STATE \quad t $\leftarrow$ arange(length)
 \STATE \quad trend $\leftarrow$ 0.02 * t \COMMENT{Linear trend}
-\STATE \quad seasonal $\leftarrow$ 2 * sin(2*π*t/12) \COMMENT{Monthly seasonality}
+\STATE \quad seasonal $\leftarrow$ 2 * sin(2*$\pi$*t/12) \COMMENT{Monthly seasonality}
 \STATE \quad noise $\leftarrow$ normal(0, noise\_std, length)
 \STATE \quad \textbf{return} trend + seasonal + noise
 \end{algorithmic}
@@ -681,9 +681,9 @@ LSTM & 0.001 & 32 & 50 & Adam & 1e-5 \\
 \begin{algorithmic}
 \STATE \textbf{function} generate\_multi\_seasonal(length=300, noise\_std=0.15)
 \STATE \quad t $\leftarrow$ arange(length)
-\STATE \quad seasonal1 $\leftarrow$ sin(2*π*t/12) \COMMENT{12-period cycle}
-\STATE \quad seasonal2 $\leftarrow$ 0.5*sin(2*π*t/24) \COMMENT{24-period cycle}
-\STATE \quad seasonal3 $\leftarrow$ 0.3*sin(2*π*t/6) \COMMENT{6-period cycle}
+\STATE \quad seasonal1 $\leftarrow$ sin(2*$\pi$*t/12) \COMMENT{12-period cycle}
+\STATE \quad seasonal2 $\leftarrow$ 0.5*sin(2*$\pi$*t/24) \COMMENT{24-period cycle}
+\STATE \quad seasonal3 $\leftarrow$ 0.3*sin(2*$\pi$*t/6) \COMMENT{6-period cycle}
 \STATE \quad noise $\leftarrow$ normal(0, noise\_std, length)
 \STATE \quad \textbf{return} seasonal1 + seasonal2 + seasonal3 + noise
 \end{algorithmic}

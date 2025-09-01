@@ -23,8 +23,8 @@ Time series forecasting has seen significant advances with transformer architect
 ## 📄 Paper Access
 
 - **📄 arXiv**: [Pending endorsement]
-- **📄 PDF**: Available in [`paper_latex/paper_draft.pdf`](paper_latex/paper_draft.pdf)
-- **📄 LaTeX Source**: Available in [`paper_latex/paper_draft.tex`](paper_latex/paper_draft.tex)
+- **📄 PDF**: Available in [`paper_latex/paper.pdf`](paper_latex/paper.pdf)
+- **📄 LaTeX Source**: Available in [`paper_latex/paper.tex`](paper_latex/paper.tex)
 - **📄 Zenodo DOI**: Will be added after upload
 
 ---
@@ -54,8 +54,8 @@ ts_comparison/
 │   ├── transformer_with_decoder_results.csv
 │   └── traditional_models_results.csv
 ├── 📁 paper_latex/                 # LaTeX paper and submission files
-│   ├── paper_draft.tex            # LaTeX source
-│   ├── paper_draft.pdf            # Compiled PDF
+│   ├── paper.tex                  # LaTeX source
+│   ├── paper.pdf                  # Compiled PDF
 │   └── arxiv_submission.zip       # arXiv submission package
 └── 📁 utils/                       # Utility functions
     └── model_analysis.py

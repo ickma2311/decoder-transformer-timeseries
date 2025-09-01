@@ -186,6 +186,66 @@ class ComprehensiveComparison:
         
         print(f"Plots saved to {self.results_dir}/comparison_plots.png")
     
+    def create_model_type_comparison_figure(self):
+        """Create the standalone model type comparison figure (Figure 4) with proper formatting."""
+        
+        # Data from comprehensive analysis results
+        model_types = ['ML/Boosting\n(60 series)', 'Neural Network\n(60 series)', 'Traditional\n(180 series)']
+        mean_mae = [3.721, 2.583, 4.034]  # XGBoost, Neural Network Average, Traditional Average
+        std_mae = [0.5, 0.47, 0.8]  # Standard deviations
+        
+        # Create figure with proper spacing
+        fig, ax = plt.subplots(1, 1, figsize=(10, 8))
+        
+        # Create bars with professional styling
+        x_pos = np.arange(len(model_types))
+        colors = ['#FF6B6B', '#4ECDC4', '#45B7D1']  # Red, Teal, Blue
+        
+        bars = ax.bar(x_pos, mean_mae, yerr=std_mae, capsize=5, 
+                      color=colors, alpha=0.8, edgecolor='black', linewidth=1.2)
+        
+        # Customize the plot
+        ax.set_xlabel('Model Type', fontsize=14, fontweight='bold')
+        ax.set_ylabel('Mean Absolute Error (MAE)', fontsize=14, fontweight='bold')
+        ax.set_xticks(x_pos)
+        ax.set_xticklabels(model_types, fontsize=12)
+        
+        # Add value labels on bars
+        for i, (bar, value, std) in enumerate(zip(bars, mean_mae, std_mae)):
+            height = bar.get_height()
+            ax.text(bar.get_x() + bar.get_width()/2., height + 0.1,
+                    f'{value:.3f}', ha='center', va='bottom', 
+                    fontsize=12, fontweight='bold')
+        
+        # Add improvement annotation with proper positioning
+        ax.annotate('Neural Network Performance Comparison by Model Type\n(Lower is Better)', 
+                    xy=(1, 2.8), xytext=(1.5, 4.2),
+                    bbox=dict(boxstyle="round,pad=0.4", facecolor='lightgreen', alpha=0.8),
+                    ha='center', va='center', fontsize=10, fontweight='bold',
+                    arrowprops=dict(arrowstyle='->', connectionstyle='arc3,rad=0.2'))
+        
+        # Add the 36% improvement note - positioned to avoid overlap
+        ax.text(0.02, 0.85, '36% improvement over\ntraditional methods', 
+                transform=ax.transAxes, fontsize=10, fontweight='bold',
+                bbox=dict(boxstyle="round,pad=0.3", facecolor='yellow', alpha=0.7),
+                verticalalignment='top')
+        
+        # Set the main title with proper spacing
+        plt.title('Time Series Forecasting: Model Type Performance Comparison', 
+                  fontsize=16, fontweight='bold', pad=30)
+        
+        # Add grid for better readability
+        ax.grid(True, alpha=0.3, axis='y')
+        ax.set_axisbelow(True)
+        
+        # Adjust layout and save
+        plt.tight_layout()
+        output_path = f'{self.results_dir}/figure4_model_type_comparison.png'
+        plt.savefig(output_path, dpi=300, bbox_inches='tight', facecolor='white')
+        plt.close()
+        
+        print(f"Model type comparison figure saved to {output_path}")
+    
     def generate_report(self, comparison_df):
         """Generate comprehensive comparison report."""
         print("\nGenerating comparison report...")
