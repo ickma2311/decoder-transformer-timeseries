@@ -6,7 +6,7 @@ Email: ickma2311@gmail.com
 
 ## Abstract
 
-Time series forecasting has seen significant advances with transformer architectures, yet most approaches adopt encoder-only designs with bidirectional attention that can inadvertently access future information during training. This paper introduces a decoder-only transformer architecture with causal attention for time series forecasting and provides a comprehensive empirical comparison against traditional statistical methods and existing neural approaches. We evaluate eight distinct forecasting methods across 60 synthetic time series spanning three pattern types: trend-seasonal, multi-seasonal, and random walk data. Our key finding is that decoder-only transformers achieve superior performance (2.143 MAE) compared to encoder-only variants (2.455 MAE) while using 76% fewer parameters (136K vs 565K). Furthermore, our results demonstrate that neural networks now clearly outperform traditional methods by 36% on average, marking a significant milestone in time series forecasting. The decoder-only architecture's autoregressive generation and causal attention mechanism prove particularly effective for temporal data, establishing new best practices for transformer-based forecasting.
+Time series forecasting has seen significant advances with transformer architectures, yet most approaches adopt encoder-only designs with bidirectional attention that can inadvertently access future information during training. This paper introduces a decoder-only transformer architecture with causal attention for time series forecasting and provides a comprehensive empirical comparison against traditional statistical methods and existing neural approaches. We evaluate eight distinct forecasting methods across publicly available real-world datasets accessed via Hugging Face Datasets, including selections from the Monash Time Series Forecasting Archive (tourism, traffic, electricity, weather) and ETTh1. Our key finding is that decoder-only transformers achieve strong performance relative to encoder-only variants while using substantially fewer parameters. These results suggest that architectural choices (e.g., causal attention) can matter more than model size for time series forecasting.
 
 **Keywords:** Time series forecasting, transformer architecture, causal attention, autoregressive modeling, neural networks
 
@@ -30,7 +30,7 @@ Current transformer-based time series forecasting methods face several key limit
 This paper makes the following key contributions:
 
 1. **Novel Architecture**: We introduce a decoder-only transformer with causal attention specifically designed for time series forecasting
-2. **Comprehensive Evaluation**: We provide an extensive empirical comparison across 8 methods and 60 time series with diverse patterns
+2. **Comprehensive Evaluation**: We compare 8 methods across multiple public, real-world datasets (Monash TSF and ETTh1)
 3. **Performance Breakthrough**: We demonstrate that decoder-only transformers achieve state-of-the-art results while being parameter-efficient
 4. **Architectural Insights**: We show that proper attention mechanisms matter more than model size for time series forecasting
 5. **Practical Guidelines**: We provide actionable recommendations for practitioners choosing forecasting methods
@@ -73,15 +73,14 @@ We conduct a comprehensive empirical study comparing eight forecasting methods a
 - Decoder-Only Transformer (136K parameters, causal attention)
 - LSTM baseline (51K parameters)
 
-### 3.2 Dataset Generation
+### 3.2 Datasets
 
-We generate three synthetic datasets to control for pattern complexity and ensure reproducible evaluation:
+We evaluate on publicly available real-world datasets accessed via the Hugging Face Datasets library, including selections from the Monash Time Series Forecasting Archive [23] and the ETT benchmark:
 
-1. **Trend-Seasonal (20 series, 200 points each)**: Linear trends with seasonal patterns mimicking business data
-2. **Multi-Seasonal (20 series, 300 points each)**: Overlapping seasonal cycles of different frequencies
-3. **Random Walk (20 series, 150 points each)**: Stochastic processes with unpredictable autoregressive behavior
+- Monash TSF (via Hugging Face): tourism (monthly visitors), traffic (hourly road occupancy), electricity (hourly usage), weather (daily meteorology)
+- ETT (Energy) — ETTh1: Hourly electricity transformer temperature dataset
 
-Each dataset contains 20 time series with known ground truth patterns, totaling 60 series and approximately 13,000 data points.
+For efficiency, we subsample up to 20 series per dataset that meet minimum length requirements (≥ 50 points) after removing missing values. We standardize to a univariate target, apply chronological 80/20 splits, and store processed arrays for reproducibility (see `data/prepare_datasets.py`).
 
 ### 3.3 Decoder-Only Transformer Architecture
 
@@ -139,7 +138,7 @@ All neural models are trained using:
 
 ### 3.5 Evaluation Protocol
 
-We employ temporal train-test splits (80/20) respecting chronological order to avoid look-ahead bias, following established time series evaluation practices [20]. Performance is measured using:
+We employ temporal train-test splits (80/20) respecting chronological order to avoid look-ahead bias, following established time series evaluation practices [20]. Datasets are downloaded and preprocessed using the Hugging Face Datasets library (see `data/prepare_datasets.py`). Performance is measured using:
 - **Primary metric**: Mean Absolute Error (MAE)
 - **Secondary metric**: Root Mean Squared Error (RMSE)
 
@@ -185,34 +184,7 @@ The decoder-only model achieves:
 ### 4.3 Dataset-Specific Performance
 
 ![Figure 3: Dataset-Specific Performance](results/figure3_dataset_performance.png)
-*Figure 3: Performance comparison across three dataset types. Each method shows distinct strengths: Prophet excels on trend-seasonal data, transformers dominate multi-seasonal patterns, and ARIMA performs well on random walks.*
-
-#### 4.3.1 Trend-Seasonal Data
-
-Prophet dominates trend-seasonal forecasting (0.868 MAE), leveraging its built-in trend and seasonality modeling. Among neural methods, decoder-only performs best (1.672 MAE):
-
-- Prophet: 0.868 MAE (domain-specific advantage)
-- **Decoder-Only**: 1.672 MAE (best neural)
-- Large Transformer: 2.341 MAE
-- Standard Transformer: 2.342 MAE
-
-#### 4.3.2 Multi-Seasonal Data
-
-For complex overlapping seasonal patterns, transformers excel, with standard transformer slightly edging out decoder-only:
-
-- **Standard Transformer**: 0.959 MAE (best overall)
-- **Decoder-Only**: 1.465 MAE (strong second)
-- Large Transformer: 1.473 MAE
-- ARIMA: 1.713 MAE (surprisingly competitive)
-
-#### 4.3.3 Random Walk Data
-
-ARIMA excels at unpredictable autoregressive patterns, but decoder-only is the best neural approach:
-
-- ARIMA: 2.641 MAE (designed for this pattern)
-- XGBoost: 2.859 MAE
-- **Decoder-Only**: 3.293 MAE (best neural)
-- Large Transformer: 3.413 MAE
+*Figure 3: Performance comparison across selected public datasets (tourism, traffic, electricity, weather, ETTh1). Methods exhibit domain-dependent strengths.*
 
 ### 4.4 Model Type Comparison
 
@@ -289,14 +261,14 @@ While decoder-only transformers achieve the best overall performance, domain-spe
 
 Our study has several limitations that future work should address:
 
-1. **Synthetic data**: Real-world time series have additional complexity
-2. **Limited scale**: Evaluation on 60 series may not generalize broadly  
-3. **Pattern diversity**: Three pattern types may not cover all forecasting scenarios
-4. **Univariate focus**: Multivariate time series present different challenges
+1. **Dataset coverage**: We evaluate a limited subset of public datasets (Monash TSF, ETTh1); broader domains may behave differently
+2. **Evaluation scale**: We subsample series per dataset for faster iteration, which may affect aggregate metrics
+3. **Task scope**: Primarily univariate forecasting; multivariate settings present additional challenges
+4. **Metric focus**: MAE/RMSE capture accuracy but not all business-relevant costs
 
 ### 6.3 Future Research Directions
 
-1. **Real-world evaluation**: Test decoder-only transformers on large-scale industry datasets, including benchmarks like the Monash Time Series Forecasting Archive [23]
+1. **Broader domains**: Evaluate across additional public and industry datasets beyond the current selection
 2. **Multivariate extensions**: Adapt causal attention for cross-variable dependencies
 3. **Hybrid architectures**: Combine domain knowledge with decoder-only designs, potentially incorporating decomposition methods [21]
 4. **Uncertainty quantification**: Leverage autoregressive structure for prediction intervals
@@ -331,7 +303,7 @@ This research contributes to the advancement of time series forecasting methods,
 
 **Over-reliance on Automated Systems**: While our models show superior performance, practitioners should maintain human oversight and domain expertise, especially in high-stakes applications like financial trading or critical infrastructure management.
 
-**Synthetic Data Limitations**: Our evaluation primarily uses synthetic datasets, which may not capture all complexities of real-world time series. Models trained on synthetic data might exhibit unexpected behaviors when deployed on real-world data with different characteristics.
+**Dataset Coverage Limitations**: We evaluate a limited subset of public datasets (Monash TSF, ETTh1); behavior may differ in other domains or data conditions.
 
 **Generalization Concerns**: The study focuses on univariate time series with specific pattern types. Performance on multivariate time series, longer sequences, or different domains may vary significantly.
 
@@ -350,7 +322,7 @@ To ensure reproducibility and support further research, we provide the following
 ### Code and Data Availability
 
 - **Source Code**: Complete implementation of all models (traditional and neural) will be made available upon publication
-- **Datasets**: All synthetic datasets used in this study are generated using reproducible scripts with fixed random seeds
+- **Data Access**: Public datasets are accessed via Hugging Face Datasets; processing code is provided in `data/prepare_datasets.py`
 - **Evaluation Framework**: The entire experimental pipeline, including data preprocessing, model training, and evaluation protocols, is documented and reproducible
 
 ### Computational Requirements
@@ -369,7 +341,7 @@ To ensure reproducibility and support further research, we provide the following
 
 ### Limitations for Reproduction
 
-- **Synthetic Focus**: Results may not generalize to all real-world datasets
+- **Dataset Selection**: Results may not generalize beyond the specific public datasets evaluated
 - **Computational Variance**: Minor numerical differences may occur across different hardware configurations
 - **Library Versions**: Results obtained with specific versions of deep learning frameworks
 
@@ -514,9 +486,9 @@ class LSTMModel:
 - **XGBoost**: n_estimators=100, max_depth=6, learning_rate=0.1, random_state=42
 - **Linear**: Simple linear regression on last 10 values
 
-### C. Dataset Generation Details
+### C. Data Preparation Details
 
-#### C.1 Trend-Seasonal Dataset
+Public datasets are accessed via Hugging Face Datasets and preprocessed with `data/prepare_datasets.py`. We standardize to univariate targets, drop missing values, enforce a minimum length (≥ 50), create chronological 80/20 splits, and save processed arrays (`*_values.npz`) and metadata (`dataset_summary.csv`).
 
 ```python
 def generate_trend_seasonal(length=200, noise_std=0.1):

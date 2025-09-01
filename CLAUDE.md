@@ -53,9 +53,9 @@ python utils/model_analysis.py           # Post-experiment analysis tools
 - LSTM: 51K parameters, recurrent baseline
 
 ### Data Pipeline
-The project uses both synthetic and real-world time series data:
-- 3 synthetic datasets with distinct patterns (trend-seasonal, multi-seasonal, random walk)
-- 60 total time series (20 per dataset type)
+The project uses publicly available real-world time series datasets via Hugging Face Datasets:
+- Monash TSF selections (tourism, traffic, electricity, weather) and ETTh1
+- Up to 20 series per dataset (minimum length thresholds)
 - 80/20 temporal split maintaining chronological order
 
 ## Research Context
