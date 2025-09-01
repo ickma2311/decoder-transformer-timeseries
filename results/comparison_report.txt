@@ -1,0 +1,56 @@
+# Time Series Forecasting: Traditional vs Transformer Models
+============================================================
+
+## Overall Performance Summary
+
+                count   mean    std    min     max
+model_type                                        
+Neural Network     18  3.274  2.490  0.845   9.936
+Traditional        27  4.142  2.887  0.637  11.100
+
+## Best Performing Models
+
+              mean    std
+model                    
+Prophet      2.668  1.620
+Transformer  3.093  2.744
+LSTM         3.454  2.360
+ARIMA        3.583  1.808
+Linear       6.176  3.707
+
+## Performance by Dataset
+
+### multi_seasonal
+
+model_type      model      
+Neural Network  LSTM            1.851
+                Transformer     1.148
+Traditional     ARIMA           1.866
+                Linear         10.341
+                Prophet         3.454
+
+### trend_seasonal
+
+model_type      model      
+Neural Network  LSTM           3.629
+                Transformer    2.483
+Traditional     ARIMA          5.624
+                Linear         3.613
+                Prophet        0.820
+
+### random_walk
+
+model_type      model      
+Neural Network  LSTM           4.884
+                Transformer    5.647
+Traditional     ARIMA          3.259
+                Linear         4.575
+                Prophet        3.731
+
+## Key Findings
+
+- Traditional models mean MAE: 4.142 ± 2.887
+- Neural network models mean MAE: 3.274 ± 2.490
+- Neural Network models perform better by 21.0%
+
+- Best overall model: Prophet (MAE: 2.668)

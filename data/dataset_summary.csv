@@ -1,0 +1,2 @@
+datasets,total_series,series_per_dataset
+"['trend_seasonal', 'multi_seasonal', 'random_walk']",60,"{'trend_seasonal': 20, 'multi_seasonal': 20, 'random_walk': 20}"
