@@ -1,0 +1,11 @@
+series_id,dataset,train_length,test_length,frequency
+energy_consumption_0,energy_consumption,63092,15773,hourly
+energy_consumption_1,energy_consumption,63092,15773,hourly
+energy_consumption_2,energy_consumption,63092,15773,hourly
+energy_consumption_3,energy_consumption,63092,15773,hourly
+energy_consumption_4,energy_consumption,63092,15773,hourly
+energy_consumption_5,energy_consumption,63092,15773,hourly
+energy_consumption_6,energy_consumption,63092,15773,hourly
+energy_consumption_7,energy_consumption,63092,15773,hourly
+energy_consumption_8,energy_consumption,63092,15773,hourly
+energy_consumption_9,energy_consumption,63092,15773,hourly
