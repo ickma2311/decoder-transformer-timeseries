@@ -1,0 +1,6 @@
+series_id,dataset,train_length,test_length,DecoderOnly_mae,DecoderOnly_rmse
+retail_sales_0,retail_sales,1168,293,73.78294968327687,86.16465544532517
+retail_sales_1,retail_sales,1168,293,46.18375121545809,55.355090693880854
+retail_sales_2,retail_sales,1168,293,39.029840821570936,48.53885867063005
+retail_sales_3,retail_sales,1168,293,34.61527213720107,46.43758572251065
+retail_sales_4,retail_sales,1168,293,119.10759458341278,129.98128921226066

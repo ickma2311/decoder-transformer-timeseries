@@ -1,0 +1,3 @@
+series_id,window_size,n_windows,series_length,LSTM_mae,LSTM_rmse,LSTM_valid_predictions,Transformer_mae,Transformer_rmse,Transformer_valid_predictions,dataset
+retail_sales_0,150,10,1168,12.9630840369938,20.106643198910437,10,14.780567916639262,21.462084912570695,10,retail_sales
+retail_sales_1,150,10,1117,7.420806532367264,9.556802048836365,10,7.608504232303605,10.42408603225563,10,retail_sales

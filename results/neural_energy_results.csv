@@ -1,0 +1,4 @@
+series_id,dataset,train_length,test_length,LSTM_mae
+energy_consumption_0,energy_consumption,63092,15773,247.2139071849822
+energy_consumption_1,energy_consumption,63092,15773,137.73278028626765
+energy_consumption_2,energy_consumption,63092,15773,162.2225486824617
