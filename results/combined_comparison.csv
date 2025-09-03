@@ -1,46 +1,73 @@
-series_id,dataset,model,model_type,mae,rmse
-multi_seasonal_0,multi_seasonal,ARIMA,Traditional,1.9459732687151372,2.500687358696364
-multi_seasonal_0,multi_seasonal,Prophet,Traditional,3.659746802830412,3.9561171205005445
-multi_seasonal_0,multi_seasonal,Linear,Traditional,11.100421173727945,12.622218447052777
-multi_seasonal_0,multi_seasonal,Transformer,Neural Network,1.5140891716623837,1.8175481996099976
-multi_seasonal_0,multi_seasonal,LSTM,Neural Network,2.1504186739527182,2.7509064923743587
-trend_seasonal_0,trend_seasonal,ARIMA,Traditional,5.727995217489665,6.470202523305712
-trend_seasonal_0,trend_seasonal,Prophet,Traditional,0.6374491910630464,0.8143712198074794
-trend_seasonal_0,trend_seasonal,Linear,Traditional,4.007041704859193,4.55019364264849
-trend_seasonal_0,trend_seasonal,Transformer,Neural Network,2.408519424955027,2.7794409353768406
-trend_seasonal_0,trend_seasonal,LSTM,Neural Network,3.4995540448171143,3.803774182278511
-random_walk_1,random_walk,ARIMA,Traditional,2.9495093366712095,3.3475669895107583
-random_walk_1,random_walk,Prophet,Traditional,5.593502405930239,6.062902791772327
-random_walk_1,random_walk,Linear,Traditional,8.8159578251176,9.534819383233824
-random_walk_1,random_walk,Transformer,Neural Network,3.9059591215735465,4.370216373886786
-random_walk_1,random_walk,LSTM,Neural Network,3.136000067026923,3.4868898461702975
-random_walk_0,random_walk,ARIMA,Traditional,4.8421422034875805,5.107909389198233
-random_walk_0,random_walk,Prophet,Traditional,2.9044283982918606,3.1457243330904268
-random_walk_0,random_walk,Linear,Traditional,3.4918692465085277,3.656918392810436
-random_walk_0,random_walk,Transformer,Neural Network,9.93590353980762,10.482523062330042
-random_walk_0,random_walk,LSTM,Neural Network,9.352464348625167,9.551520719768462
-random_walk_2,random_walk,ARIMA,Traditional,1.9857356731843,2.331413452528849
-random_walk_2,random_walk,Prophet,Traditional,2.693724513854041,3.174286952066253
-random_walk_2,random_walk,Linear,Traditional,1.4182819771532542,1.6704576468333903
-random_walk_2,random_walk,Transformer,Neural Network,3.1004454580446947,3.6229617919412056
-random_walk_2,random_walk,LSTM,Neural Network,2.1627614863475335,2.5326290411326178
-trend_seasonal_2,trend_seasonal,ARIMA,Traditional,5.856451437425756,6.903850195923848
-trend_seasonal_2,trend_seasonal,Prophet,Traditional,0.9569711802926903,1.1895535172995342
-trend_seasonal_2,trend_seasonal,Linear,Traditional,3.4243449997306903,4.183302439492722
-trend_seasonal_2,trend_seasonal,Transformer,Neural Network,2.6513259173340558,2.978254536878259
-trend_seasonal_2,trend_seasonal,LSTM,Neural Network,3.805714953633023,4.065743628261037
-trend_seasonal_1,trend_seasonal,ARIMA,Traditional,5.286510015500379,6.207567299351105
-trend_seasonal_1,trend_seasonal,Prophet,Traditional,0.8660819432236956,1.110119701323741
-trend_seasonal_1,trend_seasonal,Linear,Traditional,3.4065247099196467,4.15065859865329
-trend_seasonal_1,trend_seasonal,Transformer,Neural Network,2.390209378019538,2.786943643247446
-trend_seasonal_1,trend_seasonal,LSTM,Neural Network,3.5802955715435494,3.8710989898856685
-multi_seasonal_1,multi_seasonal,ARIMA,Traditional,1.601222414974137,2.0428117524229825
-multi_seasonal_1,multi_seasonal,Prophet,Traditional,3.0701161003544355,3.3660467891716386
-multi_seasonal_1,multi_seasonal,Linear,Traditional,10.351598861008714,11.976811656959853
-multi_seasonal_1,multi_seasonal,Transformer,Neural Network,0.8445823770217221,0.9933362706092842
-multi_seasonal_1,multi_seasonal,LSTM,Neural Network,1.761748973200391,2.0856774697642253
-multi_seasonal_2,multi_seasonal,ARIMA,Traditional,2.0512113423965057,2.5579097019462065
-multi_seasonal_2,multi_seasonal,Prophet,Traditional,3.63272408545592,3.8769713585616277
-multi_seasonal_2,multi_seasonal,Linear,Traditional,9.56964811065573,11.057802459226759
-multi_seasonal_2,multi_seasonal,Transformer,Neural Network,1.0868085652465553,1.3005203023106646
-multi_seasonal_2,multi_seasonal,LSTM,Neural Network,1.639538248330229,1.8472535521215636
+series_id,dataset,dataset_type,model,model_type,mae,rmse,evaluation_method,n_windows
+retail_sales_2,retail_sales,real_world,ARIMA,Traditional,11.334271555741026,13.765610128895345,moving_window,20
+retail_sales_2,retail_sales,real_world,Prophet,Traditional,15.719790956293306,18.87469095868078,moving_window,20
+retail_sales_2,retail_sales,real_world,Linear,Traditional,21.326027982525027,25.556218658577784,moving_window,20
+retail_sales_2,retail_sales,real_world,XGBoost,Traditional,11.90125774726009,15.377278860337205,moving_window,20
+retail_sales_2,retail_sales,real_world,LSTM,Neural Network,17.60687605756784,19.636578343900435,moving_window,10
+retail_sales_2,retail_sales,real_world,Transformer,Neural Network,14.542865224662657,17.507622801379757,moving_window,10
+multi_seasonal_1,multi_seasonal,synthetic,ARIMA,Traditional,0.8655287700817066,1.1264090158055275,moving_window,20
+multi_seasonal_1,multi_seasonal,synthetic,Prophet,Traditional,2.2444759838694437,2.5531517073149868,moving_window,20
+multi_seasonal_1,multi_seasonal,synthetic,Linear,Traditional,2.3445547458362452,2.8508582467517516,moving_window,20
+multi_seasonal_1,multi_seasonal,synthetic,XGBoost,Traditional,1.0322251407006777,1.363948131669227,moving_window,20
+multi_seasonal_1,multi_seasonal,synthetic,LSTM,Neural Network,0.6167689074040815,0.7433088270955935,moving_window,10
+multi_seasonal_1,multi_seasonal,synthetic,Transformer,Neural Network,0.8154524427525779,1.1112960544025092,moving_window,10
+multi_seasonal_0,multi_seasonal,synthetic,ARIMA,Traditional,0.8755006539343725,1.0413439997172393,moving_window,20
+multi_seasonal_0,multi_seasonal,synthetic,Prophet,Traditional,1.8527327829140567,2.299195954801874,moving_window,20
+multi_seasonal_0,multi_seasonal,synthetic,Linear,Traditional,2.08917823367874,2.589163486110034,moving_window,20
+multi_seasonal_0,multi_seasonal,synthetic,XGBoost,Traditional,1.069718780909613,1.3003520816100351,moving_window,20
+multi_seasonal_0,multi_seasonal,synthetic,LSTM,Neural Network,0.7478490251887777,0.8528518033625517,moving_window,10
+multi_seasonal_0,multi_seasonal,synthetic,Transformer,Neural Network,1.14687447616557,1.3266250956264884,moving_window,10
+random_walk_1,random_walk,synthetic,ARIMA,Traditional,0.9624398094751692,1.1857562869553844,moving_window,20
+random_walk_1,random_walk,synthetic,Prophet,Traditional,1.3091321167227865,1.5591687592724253,moving_window,20
+random_walk_1,random_walk,synthetic,Linear,Traditional,2.4496287476875462,2.8882982707561027,moving_window,20
+random_walk_1,random_walk,synthetic,XGBoost,Traditional,2.7505669179467573,3.5577439880313566,moving_window,20
+random_walk_1,random_walk,synthetic,LSTM,Neural Network,1.0837131518416114,1.2734012687996934,moving_window,10
+random_walk_1,random_walk,synthetic,Transformer,Neural Network,1.0184710994208772,1.3362895007312157,moving_window,10
+random_walk_2,random_walk,synthetic,ARIMA,Traditional,0.9952568735355998,1.161000514506573,moving_window,20
+random_walk_2,random_walk,synthetic,Prophet,Traditional,1.2605900536982735,1.5456752623423826,moving_window,20
+random_walk_2,random_walk,synthetic,Linear,Traditional,1.6256201779841284,2.0411300886913146,moving_window,20
+random_walk_2,random_walk,synthetic,XGBoost,Traditional,3.1139416301260576,3.486312300242912,moving_window,20
+random_walk_2,random_walk,synthetic,LSTM,Neural Network,1.4258832887680786,1.6071726321638042,moving_window,10
+random_walk_2,random_walk,synthetic,Transformer,Neural Network,1.237985479223146,1.3743924106901064,moving_window,10
+retail_sales_1,retail_sales,real_world,ARIMA,Traditional,10.20574079822852,12.920447031828333,moving_window,20
+retail_sales_1,retail_sales,real_world,Prophet,Traditional,11.021267880222831,14.179864471087438,moving_window,20
+retail_sales_1,retail_sales,real_world,Linear,Traditional,14.847285170545579,19.285442045245794,moving_window,20
+retail_sales_1,retail_sales,real_world,XGBoost,Traditional,11.046043005799056,13.641068767360752,moving_window,20
+retail_sales_1,retail_sales,real_world,LSTM,Neural Network,11.05840939442152,12.483744204509103,moving_window,10
+retail_sales_1,retail_sales,real_world,Transformer,Neural Network,11.556697288533268,13.767539666549396,moving_window,10
+random_walk_0,random_walk,synthetic,ARIMA,Traditional,0.6930589165711549,0.8547265267257359,moving_window,20
+random_walk_0,random_walk,synthetic,Prophet,Traditional,1.0680684863993428,1.3978673801168617,moving_window,20
+random_walk_0,random_walk,synthetic,Linear,Traditional,0.9860369452359616,1.2971694883318463,moving_window,20
+random_walk_0,random_walk,synthetic,XGBoost,Traditional,1.1667370176415046,1.3756174736328233,moving_window,20
+random_walk_0,random_walk,synthetic,LSTM,Neural Network,0.609484819996938,0.8322200439563956,moving_window,10
+random_walk_0,random_walk,synthetic,Transformer,Neural Network,0.8278410463248438,1.127184234172639,moving_window,10
+trend_seasonal_2,trend_seasonal,synthetic,ARIMA,Traditional,1.5803040782354572,2.0597708058560413,moving_window,20
+trend_seasonal_2,trend_seasonal,synthetic,Prophet,Traditional,3.9225089873712413,4.577038937291028,moving_window,20
+trend_seasonal_2,trend_seasonal,synthetic,Linear,Traditional,4.09588872888847,4.604710885172622,moving_window,20
+trend_seasonal_2,trend_seasonal,synthetic,XGBoost,Traditional,1.5791476328960037,2.0429288238227685,moving_window,20
+trend_seasonal_2,trend_seasonal,synthetic,LSTM,Neural Network,1.7282926728641286,2.1428614500775574,moving_window,10
+trend_seasonal_2,trend_seasonal,synthetic,Transformer,Neural Network,1.2815059101548711,1.607654222008551,moving_window,10
+multi_seasonal_2,multi_seasonal,synthetic,ARIMA,Traditional,0.771639895782204,0.8890895411006826,moving_window,20
+multi_seasonal_2,multi_seasonal,synthetic,Prophet,Traditional,2.0089213772809345,2.377788005273524,moving_window,20
+multi_seasonal_2,multi_seasonal,synthetic,Linear,Traditional,2.21923841787846,2.6403564713619327,moving_window,20
+multi_seasonal_2,multi_seasonal,synthetic,XGBoost,Traditional,0.9546562335932354,1.1719085937204472,moving_window,20
+multi_seasonal_2,multi_seasonal,synthetic,LSTM,Neural Network,0.9133745906887946,0.9823880209054395,moving_window,10
+multi_seasonal_2,multi_seasonal,synthetic,Transformer,Neural Network,1.0157755655354137,1.1352769735480757,moving_window,10
+retail_sales_0,retail_sales,real_world,ARIMA,Traditional,15.528515689111526,18.42235728809743,moving_window,20
+retail_sales_0,retail_sales,real_world,Prophet,Traditional,13.442132102372096,17.163073152672016,moving_window,20
+retail_sales_0,retail_sales,real_world,Linear,Traditional,14.15979841769493,20.144204075262454,moving_window,20
+retail_sales_0,retail_sales,real_world,XGBoost,Traditional,15.695816518635842,19.055489364670024,moving_window,20
+retail_sales_0,retail_sales,real_world,LSTM,Neural Network,18.719799616526593,23.095066828787935,moving_window,10
+retail_sales_0,retail_sales,real_world,Transformer,Neural Network,13.845996387441525,17.275447157743592,moving_window,10
+trend_seasonal_1,trend_seasonal,synthetic,ARIMA,Traditional,2.0136404370255816,2.286374626525082,moving_window,20
+trend_seasonal_1,trend_seasonal,synthetic,Prophet,Traditional,3.5387853427075853,4.217965413148268,moving_window,20
+trend_seasonal_1,trend_seasonal,synthetic,Linear,Traditional,3.9647927000180423,4.493087803692579,moving_window,20
+trend_seasonal_1,trend_seasonal,synthetic,XGBoost,Traditional,1.8306570658285886,2.1656781500918973,moving_window,20
+trend_seasonal_1,trend_seasonal,synthetic,LSTM,Neural Network,1.6936366359685764,2.1782412834060527,moving_window,10
+trend_seasonal_1,trend_seasonal,synthetic,Transformer,Neural Network,1.2467091630572837,1.5568039445159618,moving_window,10
+trend_seasonal_0,trend_seasonal,synthetic,ARIMA,Traditional,1.3386308538809453,1.5993968851847984,moving_window,20
+trend_seasonal_0,trend_seasonal,synthetic,Prophet,Traditional,3.8514689415313677,4.330742528511272,moving_window,20
+trend_seasonal_0,trend_seasonal,synthetic,Linear,Traditional,4.0277421298307035,4.529801233564316,moving_window,20
+trend_seasonal_0,trend_seasonal,synthetic,XGBoost,Traditional,1.7753219881626847,2.185544456499669,moving_window,20
+trend_seasonal_0,trend_seasonal,synthetic,LSTM,Neural Network,2.025279348255123,2.1567511533080905,moving_window,10
+trend_seasonal_0,trend_seasonal,synthetic,Transformer,Neural Network,1.382266011914011,1.6590755211565045,moving_window,10

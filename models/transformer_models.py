@@ -446,7 +446,11 @@ class LargeTransformerForecaster:
             return np.array([np.nan] * steps)
 
 class DecoderOnlyTransformer(nn.Module):
-    """Decoder-only Transformer for autoregressive time series forecasting."""
+    """Causal masked self-attention transformer for autoregressive forecasting.
+
+    Implements a decoder-only style stack using masked self-attention only
+    (no cross-attention/memory), preventing any future information leakage.
+    """
     
     def __init__(self, input_dim: int = 1, d_model: int = 64, nhead: int = 4, 
                  num_layers: int = 2, max_seq_len: int = 200, dropout: float = 0.1):
@@ -461,35 +465,35 @@ class DecoderOnlyTransformer(nn.Module):
         # Positional encoding
         self.positional_encoding = PositionalEncoding(d_model, max_seq_len)
         
-        # Transformer decoder layers
-        decoder_layer = nn.TransformerDecoderLayer(
+        # Masked self-attention stack (encoder used as decoder-only with causal mask)
+        encoder_layer = nn.TransformerEncoderLayer(
             d_model=d_model,
             nhead=nhead,
             dim_feedforward=d_model * 4,
             dropout=dropout,
             batch_first=True
         )
-        self.transformer_decoder = nn.TransformerDecoder(decoder_layer, num_layers)
+        self.transformer = nn.TransformerEncoder(encoder_layer, num_layers)
         
-        # Output projection (predicts next value)
+        # Output projection (predicts next value at each position)
         self.output_projection = nn.Sequential(
             nn.Linear(d_model, d_model // 2),
             nn.ReLU(),
             nn.Dropout(dropout),
-            nn.Linear(d_model // 2, 1)  # Only predict next single value
+            nn.Linear(d_model // 2, 1)
         )
         
     def _generate_causal_mask(self, seq_len: int):
-        """Generate causal mask to prevent attending to future positions."""
-        mask = torch.triu(torch.ones(seq_len, seq_len), diagonal=1)
-        return mask.bool()
+        """Generate an upper-triangular causal mask (True blocks attention)."""
+        mask = torch.triu(torch.ones(seq_len, seq_len, dtype=torch.bool), diagonal=1)
+        return mask
     
-    def forward(self, x, return_attention=False):
+    def forward(self, x, return_attention: bool = False):
         # x shape: (batch_size, seq_len)
         batch_size, seq_len = x.shape
         
         # Add feature dimension
-        x = x.unsqueeze(-1)  # (batch_size, seq_len, 1)
+        x = x.unsqueeze(-1)  # (batch_size, seq_len, input_dim=1)
         
         # Input projection
         x = self.input_projection(x)  # (batch_size, seq_len, d_model)
@@ -497,12 +501,11 @@ class DecoderOnlyTransformer(nn.Module):
         # Add positional encoding
         x = self.positional_encoding(x)
         
-        # Create causal mask
+        # Causal self-attention mask (S, S)
         causal_mask = self._generate_causal_mask(seq_len).to(x.device)
         
-        # Transformer decoder (self-attention with causal masking)
-        # Note: For decoder-only, we use the same sequence as both memory and target
-        x = self.transformer_decoder(x, x, tgt_mask=causal_mask)
+        # Masked self-attention stack
+        x = self.transformer(x, mask=causal_mask)  # (batch_size, seq_len, d_model)
         
         # Predict next value for each position
         output = self.output_projection(x)  # (batch_size, seq_len, 1)

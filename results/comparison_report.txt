@@ -5,52 +5,66 @@
 
                 count   mean    std    min     max
 model_type                                        
-Neural Network     18  3.274  2.490  0.845   9.936
-Traditional        27  4.142  2.887  0.637  11.100
+Neural Network     24  4.506  6.111  0.609  18.720
+Traditional        48  4.926  5.497  0.693  21.326
 
 ## Best Performing Models
 
               mean    std
 model                    
-Prophet      2.668  1.620
-Transformer  3.093  2.744
-LSTM         3.454  2.360
-ARIMA        3.583  1.808
-Linear       6.176  3.707
+ARIMA        3.930  5.233
+Transformer  4.160  5.564
+XGBoost      4.493  5.209
+LSTM         4.852  6.846
+Prophet      5.103  5.191
+Linear       6.178  6.680
 
 ## Performance by Dataset
+
+### retail_sales
+
+model_type      model      
+Neural Network  LSTM           15.795
+                Transformer    13.315
+Traditional     ARIMA          12.356
+                Linear         16.778
+                Prophet        13.394
+                XGBoost        12.881
 
 ### multi_seasonal
 
 model_type      model      
-Neural Network  LSTM            1.851
-                Transformer     1.148
-Traditional     ARIMA           1.866
-                Linear         10.341
-                Prophet         3.454
-
-### trend_seasonal
-
-model_type      model      
-Neural Network  LSTM           3.629
-                Transformer    2.483
-Traditional     ARIMA          5.624
-                Linear         3.613
-                Prophet        0.820
+Neural Network  LSTM           0.759
+                Transformer    0.993
+Traditional     ARIMA          0.838
+                Linear         2.218
+                Prophet        2.035
+                XGBoost        1.019
 
 ### random_walk
 
 model_type      model      
-Neural Network  LSTM           4.884
-                Transformer    5.647
-Traditional     ARIMA          3.259
-                Linear         4.575
-                Prophet        3.731
+Neural Network  LSTM           1.040
+                Transformer    1.028
+Traditional     ARIMA          0.884
+                Linear         1.687
+                Prophet        1.213
+                XGBoost        2.344
+
+### trend_seasonal
+
+model_type      model      
+Neural Network  LSTM           1.816
+                Transformer    1.303
+Traditional     ARIMA          1.644
+                Linear         4.029
+                Prophet        3.771
+                XGBoost        1.728
 
 ## Key Findings
 
-- Traditional models mean MAE: 4.142 ± 2.887
-- Neural network models mean MAE: 3.274 ± 2.490
-- Neural Network models perform better by 21.0%
+- Traditional models mean MAE: 4.926 ± 5.497
+- Neural network models mean MAE: 4.506 ± 6.111
+- Neural Network models perform better by 8.5%
 
-- Best overall model: Prophet (MAE: 2.668)
+- Best overall model: ARIMA (MAE: 3.930)

@@ -15,8 +15,8 @@ warnings.filterwarnings("ignore")
 # Add parent directory to path
 sys.path.append(str(Path(__file__).parent.parent))
 
-from models.traditional_models_simple import TraditionalModelEvaluator
-from models.transformer_models import TransformerModelEvaluator
+from models.traditional_models_moving_window import MovingWindowEvaluator
+from models.neural_models_moving_window import MovingWindowNeuralEvaluator
 
 class ComprehensiveComparison:
     """Runs comprehensive comparison between traditional and transformer models."""
@@ -26,94 +26,137 @@ class ComprehensiveComparison:
         os.makedirs(results_dir, exist_ok=True)
         
         self.datasets = [
+            # Synthetic datasets (controlled experiments)
             'data/trend_seasonal_values.npz',
             'data/multi_seasonal_values.npz', 
-            'data/random_walk_values.npz'
+            'data/random_walk_values.npz',
+            # Real-world style datasets (practical validation)
+            'data/retail_sales_values.npz',
+            'data/energy_consumption_values.npz'
         ]
         
-    def run_traditional_models(self, save_results=True):
-        """Run traditional model evaluation."""
+    def run_traditional_models(self, window_size=100, max_windows=20, save_results=True):
+        """Run traditional model evaluation with moving window validation."""
         print("="*60)
-        print("RUNNING TRADITIONAL MODELS")
+        print("RUNNING TRADITIONAL MODELS - MOVING WINDOW VALIDATION")
         print("="*60)
         
-        evaluator = TraditionalModelEvaluator()
+        evaluator = MovingWindowEvaluator(window_size=window_size, max_windows=max_windows)
         all_results = []
         
         for dataset_path in self.datasets:
+            if not os.path.exists(dataset_path):
+                print(f"⚠️  Dataset not found: {dataset_path}")
+                continue
+                
             try:
-                results = evaluator.evaluate_dataset(dataset_path)
+                # Adjust max_series based on dataset type
+                max_series = 3 if 'energy' in dataset_path else 5
+                results = evaluator.evaluate_dataset_moving_window(dataset_path, max_series=max_series)
+                
+                # Add dataset info to results
+                dataset_name = dataset_path.split('/')[-1].replace('_values.npz', '')
+                for result in results:
+                    result['evaluation_method'] = 'moving_window'
+                    result['dataset_type'] = 'real_world' if dataset_name in ['retail_sales', 'energy_consumption'] else 'synthetic'
+                
                 all_results.extend(results)
             except Exception as e:
                 print(f"Failed to evaluate {dataset_path}: {e}")
         
         if all_results and save_results:
-            evaluator.save_results(all_results, f'{self.results_dir}/traditional_results.csv')
+            df = pd.DataFrame(all_results)
+            df.to_csv(f'{self.results_dir}/traditional_results.csv', index=False)
+            print(f"Traditional results saved to {self.results_dir}/traditional_results.csv")
         
         return all_results
     
-    def run_transformer_models(self, max_series_per_dataset=5, save_results=True):
-        """Run transformer model evaluation."""
+    def run_neural_models(self, window_size=100, max_windows=10, max_series_per_dataset=3, save_results=True):
+        """Run neural model evaluation with moving window validation."""
         print("="*60)
-        print("RUNNING TRANSFORMER MODELS")
+        print("RUNNING NEURAL MODELS - MOVING WINDOW VALIDATION")
         print("="*60)
         
-        evaluator = TransformerModelEvaluator()
+        evaluator = MovingWindowNeuralEvaluator(window_size=window_size, max_windows=max_windows)
         all_results = []
         
         for dataset_path in self.datasets:
+            if not os.path.exists(dataset_path):
+                print(f"⚠️  Dataset not found: {dataset_path}")
+                continue
+            
+            # Skip energy consumption for neural models due to computational cost
+            if 'energy' in dataset_path:
+                print(f"⚠️  Skipping {dataset_path} for neural models (computational cost)")
+                continue
+                
             try:
-                results = evaluator.evaluate_dataset(dataset_path, max_series=max_series_per_dataset)
+                results = evaluator.evaluate_dataset_moving_window(dataset_path, max_series=max_series_per_dataset)
+                
+                # Add dataset info to results
+                dataset_name = dataset_path.split('/')[-1].replace('_values.npz', '')
+                for result in results:
+                    result['evaluation_method'] = 'moving_window'
+                    result['dataset_type'] = 'real_world' if dataset_name in ['retail_sales', 'energy_consumption'] else 'synthetic'
+                
                 all_results.extend(results)
             except Exception as e:
                 print(f"Failed to evaluate {dataset_path}: {e}")
         
         if all_results and save_results:
-            evaluator.save_results(all_results, f'{self.results_dir}/transformer_results.csv')
+            df = pd.DataFrame(all_results)
+            df.to_csv(f'{self.results_dir}/neural_results.csv', index=False)
+            print(f"Neural results saved to {self.results_dir}/neural_results.csv")
         
         return all_results
     
-    def combine_results(self, traditional_results, transformer_results):
-        """Combine traditional and transformer results for comparison."""
+    def combine_results(self, traditional_results, neural_results):
+        """Combine traditional and neural results for comparison."""
         
         # Convert to DataFrames
         trad_df = pd.DataFrame(traditional_results)
-        trans_df = pd.DataFrame(transformer_results)
+        neural_df = pd.DataFrame(neural_results)
         
         # Create combined comparison dataset
         comparison_data = []
         
         # Get series that appear in both datasets
-        common_series = set(trad_df['series_id']) & set(trans_df['series_id'])
+        common_series = set(trad_df['series_id']) & set(neural_df['series_id'])
         
         for series_id in common_series:
             trad_row = trad_df[trad_df['series_id'] == series_id].iloc[0]
-            trans_row = trans_df[trans_df['series_id'] == series_id].iloc[0]
+            neural_row = neural_df[neural_df['series_id'] == series_id].iloc[0]
             
             # Traditional models
-            for model in ['ARIMA', 'Prophet', 'Linear']:
+            for model in ['ARIMA', 'Prophet', 'Linear', 'XGBoost']:
                 mae_col = f'{model}_mae'
                 if mae_col in trad_row and not pd.isna(trad_row[mae_col]):
                     comparison_data.append({
                         'series_id': series_id,
                         'dataset': trad_row['dataset'],
+                        'dataset_type': trad_row.get('dataset_type', 'unknown'),
                         'model': model,
                         'model_type': 'Traditional',
                         'mae': trad_row[mae_col],
-                        'rmse': trad_row.get(f'{model}_rmse', np.nan)
+                        'rmse': trad_row.get(f'{model}_rmse', np.nan),
+                        'evaluation_method': trad_row.get('evaluation_method', 'moving_window'),
+                        'n_windows': trad_row.get('n_windows', np.nan)
                     })
             
-            # Transformer models  
-            for model in ['Transformer', 'LSTM']:
+            # Neural models  
+            for model in ['LSTM', 'Transformer', 'LargeTransformer', 'DecoderOnly']:
                 mae_col = f'{model}_mae'
-                if mae_col in trans_row and not pd.isna(trans_row[mae_col]):
+                if mae_col in neural_row and not pd.isna(neural_row[mae_col]):
                     comparison_data.append({
                         'series_id': series_id,
-                        'dataset': trans_row['dataset'],
+                        'dataset': neural_row['dataset'],
+                        'dataset_type': neural_row.get('dataset_type', 'unknown'),
                         'model': model,
                         'model_type': 'Neural Network',
-                        'mae': trans_row[mae_col],
-                        'rmse': trans_row.get(f'{model}_rmse', np.nan)
+                        'mae': neural_row[mae_col],
+                        'rmse': neural_row.get(f'{model}_rmse', np.nan),
+                        'evaluation_method': neural_row.get('evaluation_method', 'moving_window'),
+                        'n_windows': neural_row.get('n_windows', np.nan)
                     })
         
         return pd.DataFrame(comparison_data)
@@ -328,20 +371,21 @@ class ComprehensiveComparison:
     def run_full_comparison(self, max_series_per_dataset=5):
         """Run the complete comparison pipeline."""
         print("Starting comprehensive time series forecasting comparison...")
-        print(f"Evaluating on {len(self.datasets)} datasets")
-        print(f"Transformer models limited to {max_series_per_dataset} series per dataset for speed")
+        print("🔄 Using MOVING WINDOW VALIDATION (realistic forecasting scenario)")
+        print(f"📊 Evaluating on {len(self.datasets)} datasets")
+        print(f"🚀 Neural models limited to {max_series_per_dataset} series per dataset for speed")
         print("")
         
-        # Run evaluations
+        # Run evaluations with moving window
         traditional_results = self.run_traditional_models()
-        transformer_results = self.run_transformer_models(max_series_per_dataset)
+        neural_results = self.run_neural_models(max_series_per_dataset=max_series_per_dataset)
         
-        if not traditional_results or not transformer_results:
+        if not traditional_results or not neural_results:
             print("Insufficient results to compare. Exiting.")
             return
         
         # Combine and analyze results
-        comparison_df = self.combine_results(traditional_results, transformer_results)
+        comparison_df = self.combine_results(traditional_results, neural_results)
         
         if len(comparison_df) == 0:
             print("No overlapping series found for comparison. Exiting.")
@@ -355,7 +399,7 @@ class ComprehensiveComparison:
         self.create_visualizations(comparison_df)
         self.generate_report(comparison_df)
         
-        print("\\nComparison complete! Check the results directory for detailed outputs.")
+        print("\\n🎉 Moving window comparison complete! Check the results directory for detailed outputs.")
 
 def main():
     """Main execution function."""
